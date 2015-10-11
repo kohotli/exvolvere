@@ -30,3 +30,7 @@ class board:
         for y in range(height):
             self.layout[0][y] = outerWall
             self.layout[height-1][y] = outerWall
+
+    #Location is a coordinate list of form [y, x]
+    def getTile(self,location):
+        return self.layout[location[1]][location[0]]

@@ -7,7 +7,7 @@ def initCurses():
     curses.noecho()
     return stdscr
 
-#Make curses window
+#Make curses window, returns curses window
 def makeWindow(height, width, begin_y, begin_x):
     return curses.newwin(height, width, begin_y, begin_x)
 
@@ -16,10 +16,10 @@ def showCell(cell, window):
     window.addch(cell[0], cell[1], cell[2])
 
 #Displays characters on screen, takes a curses window and list of cells
-def displayCells(window,cellist):
+def displayCells(window,cellList):
     window.erase()
     window.border(0)
-    for i in celllist:
+    for i in cellList:
         showCell(i, window)
 
 def getKey(window):
