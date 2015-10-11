@@ -1,0 +1,40 @@
+Exvolvere Mutation Tree:
+
+BEGIN:
+-Evolve Movement
+|-Evolve Primary Attribute(Str)
+|-Evolve Primary Attribute(Agi)
+|-Evolve Primary Attribute(Def)
+-Evolve Vision
+
+STR MUTATIONS:
+-Strike
+ -Pierce
+  -Sunder
+  -Overpower
+ -Slash
+  -Whirlwind
+-Roar
+ -Taunt
+
+AGI MUTATIONS:
+-Stealth
+
+Ability descriptions:
+Creep - passive ability, makes the creature harder to detect by enemies that rely
+Overpower - passive ability, enemies affected by basic attacks are unable to flee for one turn
+Pierce - basic piercing attack, does reduced damage but ignores enemy armor
+Roar - reduces aggression for enemies below a given aggro stat, raises it for those above
+Slash - does damage to the three squares directly in front of the player. Does higher than average damage but is more heavily affected by enemy armor
+Stealth - inflicts the stealth status on self until turned off
+Strike - basic damaging attack, no special effects
+Sunder - attack that does no damage but halves enemy armor for some time
+Taunt - increases aggression for all nearby enemies
+Whirlwind - does good damage to all enemies in the 8 tiles surrounding the creature, but increases the creature's dizziness counter by 8
+
+Status effects:
+Asleep - a creature that is asleep is unable to act for a certain period, but regenerates health at an increased rate during this time. Most creatures suffer a movement and damage penalty the turn that they wake up
+Dizzy - turning in place increments a dizziness counter, which (when a certain threshold is exceeded) causes the creature to become dizzy. Dizzy creatures are unable to move or attack for one turn
+Frenzy - doing more damage per attack, but also taking more damage
+Taunted - a taunted creature is forced to attack the target that taunted it for a period of time
+Winded - some attacks inflict the winded effect, which stuns the player for one turn (make this a rare effect? Unfun mechanic, potential instant loss if handled wrong)
