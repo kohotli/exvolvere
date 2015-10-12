@@ -32,7 +32,7 @@ class cell:
         self.defense = 1 #% damage reduction
         self.agility = 1 #Affects dodge chance and crit damage
         self.critchance = 25 #% chance to crit
-        self.basecritdamage = 200 #% increase to base damage when critting
+        self.critdamage = 200 #% increase to base damage when critting
         self.healmult = 100 #% effectiveness of healing
 
         #TODO: Learn mutation functions
@@ -43,7 +43,7 @@ class cell:
         if not self.buffs['paralyzed']:
             self.setBuff('move', True)
 
-    #TODO: Stats
+    #TODO: Dodge chance
     def self.hurt(self,amt):
         dmg = amt / (self.defense / 100.0)
         if dmg >= self.hp:
@@ -60,18 +60,24 @@ class cell:
 
     #TODO: Status effects
     def setParalyzed(self):
-        self.setBuffs('move', False)
-        self.setBuffs('paralyzed', True)
+        self.setBuff('move', False)
+        self.setBuff('paralyzed', True)
 
     #TODO: Active Ability Effects
     #Just processes effects, doesn't check for range or anything else
     def self.doStrike(self, cell):
         amt = self.dmg * (1 + (self.attack / 100))
+        if self.checkCrit:
+            amt *= (self.critdamage / 100.0)
         cell.hurt(amt)
 
     def self.doWall(self):
         self.defense *= 2
         self.setBuff('wall', True)
+
+    def self.checkCrit(self):
+        #TODO: Critical strikes
+        return False
 
     def self.kill(self):
         self.setBuff('alive', False)
