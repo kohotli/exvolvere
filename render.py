@@ -7,6 +7,11 @@ def initCurses():
     curses.noecho()
     return stdscr
 
+def closeCurses(stdscr):
+    stdscr.keypad(0)
+    curses.echo()
+    curses.endwin()
+
 #Make curses window, returns curses window
 def makeWindow(height, width, begin_y, begin_x):
     return curses.newwin(height, width, begin_y, begin_x)
@@ -21,3 +26,13 @@ def displayCells(window,cellList):
     window.border(0)
     for i in cellList:
         showCell(i, window)
+
+#Calls getInput for all playable cells
+#Returns False if quitkey is triggered, else returns True
+def inputLoop(players, board, window, quitkey):
+    inpt = window.getKey()
+    if inpt == quitkey:
+        return False
+    for i in players:
+        i.getInput(board, inpt)
+    return True

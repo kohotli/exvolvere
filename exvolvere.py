@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 import curses
+import cells
+import render
+import board
 
 class Character:
     def __init__(self, icon, y, x, cellnum, isplayable=False):

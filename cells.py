@@ -99,9 +99,21 @@ class player(cell):
         self.idnum = cellnum
         self.playable = True
 
-    def getInput(window, board):
-        inpt = window.getkey()
-        if inpt == self.northkey:
+        #Key definitions
+        northkey == 'w'
+        southkey == 'x'
+        eastkey == 's'
+        westkey == 'a'
+        NEkey == 'f'
+        NWkey == 'q'
+        SEkey == 'c'
+        SWkey == 'z'
+        waitkey == 'r'
+
+    def getInput(board, inpt):
+        if inpt == self.waitkey:
+            break
+        elif inpt == self.northkey:
             self.moveNorth(board)
         elif inpt == self.southkey:
             self.moveSouth(board)
