@@ -1,17 +1,30 @@
 class tile:
     #Represents board tiles
     def __init__(self,solid,ident,ch=" "):
-        self.isSolid = solid
+        self.solid = solid
         self.pid = ident
         self.tile = ch
+        self.occupied = False
 
-    #Get various attributes
+    #Check if the tile is passable
     def isPassable():
-        return self.isSolid
+        if self.occupied == True:
+            passable = False
+        elif self.solid == True:
+            passable = False
+        else:
+            passable = True
+        return passable
+
     def getPid():
         return self.pid
     def getTile():
         return self.tile
+
+    def isOccupied():
+        return self.occupied
+    def setOccupied(x):
+        self.occupied = x
 
 class board:
     #Outer tiles will be filled with impassable terrain

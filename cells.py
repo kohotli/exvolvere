@@ -41,6 +41,13 @@ class cell:
         #    elif direction == 7:
         #        self.moveSW(board)
 
+        def updateLocation(dest, board):
+            tileprev = board.getTile(self.coords)
+            tilenew = board.getTile(dest)
+            tileprev.setOccupied(False)
+            tilenew.setOccupied(True)
+            self.coords = dest
+
         def moveNorth(board):
             dest = [self.coords[0] - 1, self.coords[1]]
             tile = board.getTile(dest)
