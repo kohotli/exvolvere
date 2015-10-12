@@ -169,10 +169,8 @@ class cell:
 
 class player(cell):
     def __init__(self, y, x, icon, cellnum):
-        self.chricon = icon
-        self.coords = [y, x]
-        self.evopoints = 0
-        self.idnum = cellnum
+        cell.__init__(self, y, x, icon, cellnum)
+
         self.playable = True
 
         #Key definitions
