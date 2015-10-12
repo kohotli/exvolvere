@@ -15,6 +15,26 @@ class cell:
                 'paralyzed' : 1,
                 }
 
+        self.learnedmutations = {
+                'move' : False,
+                'sight' : False,
+                'strike' : False, #Basic damaging strike
+                'wall' : False, #Passes turn but doubles def
+                'leap' : False #Moves you two spaces in any direction
+                }
+
+        #Stat variables
+        self.level = 1
+        self.hp = 10
+        self.maxhp = 10
+        self.damage = 1
+        self.attack = 1 #% damage increase
+        self.defense = 1 #% damage reduction
+        self.agility = 1 #Affects dodge chance and crit damage
+        self.critchance = 25 #% chance to crit
+        self.basecritdamage = 200 #% increase to base damage when critting
+        self.healmult = 100 #% effectiveness of healing
+
         #TODO: Mutation flags
         #Mutation flags will take the form "self.mutfoo"
         #where "foo" is a one-word description of the mutation
@@ -28,7 +48,23 @@ class cell:
         if self.currentstatus != self.statuses['paralyzed']:
             self.canmove = True
 
+    def self.setStatus(self,status):
+        self.currentstatus = self.statuses[status]
+
     #TODO: Stats
+    def self.hurt(self,amt):
+        dmg = amt / (self.defense / 100.0)
+        if dmg >= self.hp:
+            self.kill()
+        elif dmg > 0:
+            self.hp -= dmg
+
+    def self.heal(self,amt,healmult):
+        healamt = amt * (healmult / 100)
+        if (self.hp + healamt) > self.maxhp:
+            self.hp = self.maxhp
+        elif healamt > 0:
+            self.hp += healamt
 
     #TODO: Status effects
     def self.clearStatus(self):
