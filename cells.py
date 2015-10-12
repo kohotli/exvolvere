@@ -25,12 +25,20 @@ class cell:
         def move(self, direction, board):
             if direction == 0:
                 self.moveNorth(board)
-            if direction == 1:
+            elif direction == 1:
                 self.moveSouth(board)
-            if direction == 2:
+            elif direction == 2:
                 self.moveEast(board)
-            if direction == 3:
+            elif direction == 3:
                 self.moveWest(board)
+            elif direction == 4:
+                self.moveNE(board)
+            elif direction == 5:
+                self.moveNW(board)
+            elif direction == 6:
+                self.moveSE(board)
+            elif direction == 7:
+                self.moveSW(board)
 
         def moveNorth(board):
             dest = [self.coords[0] - 1, self.coords[1]]
@@ -56,4 +64,27 @@ class cell:
             passable = tile.isPassable()
             if passable:
                 self.coords = dest
- 
+        def moveNE(board):
+            dest = [self.coords[0] - 1, self.coords[1] - 1]
+            tile = board.getTile(dest)
+            passable = tile.isPassable()
+            if passable:
+                self.coords = dest
+        def moveNW(board):
+            dest = [self.coords[0] - 1, self.coords[1] + 1]
+            tile = board.getTile(dest)
+            passable = tile.isPassable()
+            if passable:
+                self.coords = dest
+        def moveSE(board):
+            dest = [self.coords[0] + 1, self.coords[1] - 1]
+            tile = board.getTile(dest)
+            passable = tile.isPassable()
+            if passable:
+                self.coords = dest
+        def moveSW(board):
+            dest = [self.coords[0] + 1, self.coords[1] + 1]
+            tile = board.getTile(dest)
+            passable = tile.isPassable()
+            if passable:
+                self.coords = dest
