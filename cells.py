@@ -52,55 +52,35 @@ class cell:
             self.updateLocation(dest, board)
 
         def checkCollision(self, dest, board):
+            tile = board.getTile(dest)
+            passable = tile.isPassable()
+            if passable:
+                self.updateLocation(dest, board)
 
         def moveNorth(self, board):
             dest = [self.coords[0] - 1, self.coords[1]]
-            tile = board.getTile(dest)
-            passable = tile.isPassable()
-            if passable:
-                self.updateLocation(dest, board)
+            self.checkCollision(dest, board)
         def moveSouth(self, board):
             dest = [self.coords[0] + 1, self.coords[1]]
-            tile = board.getTile(dest)
-            passable = tile.isPassable()
-            if passable:
-                self.updateLocation(dest, board)
+            self.checkCollision(dest, board)
         def moveEast(self, board):
             dest = [self.coords[0], self.coords[1] - 1]
-            tile = board.getTile(dest)
-            passable = tile.isPassable()
-            if passable:
-                self.updateLocation(dest, board)
+            self.updateLocation(dest, board)
         def moveWest(self, board):
             dest = [self.coords[0], self.coords[1] + 1]
-            tile = board.getTile(dest)
-            passable = tile.isPassable()
-            if passable:
-                self.updateLocation(dest, board)
+            self.updateLocation(dest, board)
         def moveNE(self, board):
             dest = [self.coords[0] - 1, self.coords[1] - 1]
-            tile = board.getTile(dest)
-            passable = tile.isPassable()
-            if passable:
-                self.updateLocation(dest, board)
+            self.checkCollision(dest, board)
         def moveNW(self, board):
             dest = [self.coords[0] - 1, self.coords[1] + 1]
-            tile = board.getTile(dest)
-            passable = tile.isPassable()
-            if passable:
-                self.updateLocation(dest, board)
+            self.checkCollision(dest, board)
         def moveSE(self, board):
             dest = [self.coords[0] + 1, self.coords[1] - 1]
-            tile = board.getTile(dest)
-            passable = tile.isPassable()
-            if passable:
-                self.updateLocation(dest, board)
+            self.checkCollision(dest, board)
         def moveSW(self, board):
             dest = [self.coords[0] + 1, self.coords[1] + 1]
-            tile = board.getTile(dest)
-            passable = tile.isPassable()
-            if passable:
-                self.updateLocation(dest, board)
+            self.checkCollision(dest, board)
 
 class player(cell):
     def __init__(self, y, x, icon, cellnum):
