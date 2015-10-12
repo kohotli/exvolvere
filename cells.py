@@ -20,6 +20,7 @@ class cell:
                 'wall' : False
                 'hurt' : False
                 'paralyzed' : False
+                'move' : False
                 }
 
         #Stat variables
@@ -40,7 +41,7 @@ class cell:
     def self.learnMove(self):
         self.mutmove = True
         if not self.buffs['paralyzed']:
-            self.setBuff('move' True)
+            self.setBuff('move', True)
 
     #TODO: Stats
     def self.hurt(self,amt):
@@ -58,6 +59,9 @@ class cell:
             self.hp += healamt
 
     #TODO: Status effects
+    def setParalyzed(self):
+        self.setBuffs('move', False)
+        self.setBuffs('paralyzed', True)
 
     #TODO: Active Ability Effects
     #Just processes effects, doesn't check for range or anything else
