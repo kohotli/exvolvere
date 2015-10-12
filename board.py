@@ -7,7 +7,7 @@ class tile:
         self.occupied = False
 
     #Check if the tile is passable
-    def isPassable():
+    def isPassable(self):
         if self.occupied == True:
             passable = False
         elif self.solid == True:
@@ -16,14 +16,14 @@ class tile:
             passable = True
         return passable
 
-    def getPid():
+    def getPid(self):
         return self.pid
-    def getTile():
+    def getTile(self):
         return self.tile
 
-    def isOccupied():
+    def isOccupied(self):
         return self.occupied
-    def setOccupied(x):
+    def setOccupied(self, x):
         self.occupied = x
 
 class board:

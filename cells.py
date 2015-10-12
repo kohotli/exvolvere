@@ -7,6 +7,7 @@ class cell:
         self.idnum = cellnum
         self.playable = False
         self.canmove = False
+        self.phased = False
 
         #TODO: Ability flags
 
@@ -42,61 +43,64 @@ class cell:
         #    elif direction == 7:
         #        self.moveSW(board)
 
-        def updateLocation(dest, board):
+        def updateLocation(self, dest, board):
             tileprev = board.getTile(self.coords)
             tilenew = board.getTile(dest)
             tileprev.setOccupied(False)
-            tilenew.setOccupied(True)
-            self.coords = dest
+            if self.phased == False:
+                tilenew.setOccupied(True)
+            self.updateLocation(dest, board)
 
-        def moveNorth(board):
+        def checkCollision(self, dest, board):
+
+        def moveNorth(self, board):
             dest = [self.coords[0] - 1, self.coords[1]]
             tile = board.getTile(dest)
             passable = tile.isPassable()
             if passable:
-                self.coords = dest
-        def moveSouth(board):
+                self.updateLocation(dest, board)
+        def moveSouth(self, board):
             dest = [self.coords[0] + 1, self.coords[1]]
             tile = board.getTile(dest)
             passable = tile.isPassable()
             if passable:
-                self.coords = dest
-        def moveEast(board):
+                self.updateLocation(dest, board)
+        def moveEast(self, board):
             dest = [self.coords[0], self.coords[1] - 1]
             tile = board.getTile(dest)
             passable = tile.isPassable()
             if passable:
-                self.coords = dest
-        def moveWest(board):
+                self.updateLocation(dest, board)
+        def moveWest(self, board):
             dest = [self.coords[0], self.coords[1] + 1]
             tile = board.getTile(dest)
             passable = tile.isPassable()
             if passable:
-                self.coords = dest
-        def moveNE(board):
+                self.updateLocation(dest, board)
+        def moveNE(self, board):
             dest = [self.coords[0] - 1, self.coords[1] - 1]
             tile = board.getTile(dest)
             passable = tile.isPassable()
             if passable:
-                self.coords = dest
-        def moveNW(board):
+                self.updateLocation(dest, board)
+        def moveNW(self, board):
             dest = [self.coords[0] - 1, self.coords[1] + 1]
             tile = board.getTile(dest)
             passable = tile.isPassable()
             if passable:
-                self.coords = dest
-        def moveSE(board):
+                self.updateLocation(dest, board)
+        def moveSE(self, board):
             dest = [self.coords[0] + 1, self.coords[1] - 1]
             tile = board.getTile(dest)
             passable = tile.isPassable()
             if passable:
-                self.coords = dest
-        def moveSW(board):
+                self.updateLocation(dest, board)
+        def moveSW(self, board):
             dest = [self.coords[0] + 1, self.coords[1] + 1]
             tile = board.getTile(dest)
             passable = tile.isPassable()
             if passable:
-                self.coords = dest
+                self.updateLocation(dest, board)
 
 class player(cell):
     def __init__(self, y, x, icon, cellnum):
@@ -119,7 +123,7 @@ class player(cell):
         SWkey == 'z'
         waitkey == 'r'
 
-    def getInput(board, inpt):
+    def getInput(self, board, inpt):
         if inpt == self.waitkey:
             break
         elif self.canmove:
