@@ -6,6 +6,7 @@ class cell:
         self.evopoints = 0
         self.idnum = cellnum
         self.playable = False
+        self.canmove = False
 
         #TODO: Ability flags
 
@@ -105,6 +106,7 @@ class player(cell):
         self.evopoints = 0
         self.idnum = cellnum
         self.playable = True
+        self.canmove = False
 
         #Key definitions
         northkey == 'w'
@@ -120,19 +122,20 @@ class player(cell):
     def getInput(board, inpt):
         if inpt == self.waitkey:
             break
-        elif inpt == self.northkey:
-            self.moveNorth(board)
-        elif inpt == self.southkey:
-            self.moveSouth(board)
-        elif inpt == self.eastkey:
-            self.moveEast(board)
-        elif inpt == self.westkey:
-            self.moveWest(board)
-        elif inpt == self.NEkey:
-            self.moveNE(board)
-        elif inpt == self.NWkey:
-            self.moveNW(board)
-        elif inpt == self.SEkey:
-            self.moveSE(board)
-        elif inpt == self.SWkey:
-            self.moveSW(board)
+        elif self.canmove:
+            if inpt == self.northkey:
+                self.moveNorth(board)
+            elif inpt == self.southkey:
+                self.moveSouth(board)
+            elif inpt == self.eastkey:
+                self.moveEast(board)
+            elif inpt == self.westkey:
+                self.moveWest(board)
+            elif inpt == self.NEkey:
+                self.moveNE(board)
+            elif inpt == self.NWkey:
+                self.moveNW(board)
+            elif inpt == self.SEkey:
+                self.moveSE(board)
+            elif inpt == self.SWkey:
+                self.moveSW(board)
