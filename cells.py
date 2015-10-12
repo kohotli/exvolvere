@@ -2,18 +2,9 @@ class cell:
     def __init__(self, y, x, icon, cellnum):
         self.chricon = icon
         self.coords = [y, x]
-        self.isalive = True
         self.evopoints = 0
         self.idnum = cellnum
         self.playable = False
-        self.canmove = False
-        self.phased = False
-        self.currentstatus = 0
-
-        self.statuses = {
-                'nostatus' : 0,
-                'paralyzed' : 1,
-                }
 
         self.learnedmutations = {
                 'move' : False,
@@ -21,6 +12,14 @@ class cell:
                 'strike' : False, #Basic damaging strike
                 'wall' : False, #Passes turn but doubles def
                 'leap' : False #Moves you two spaces in any direction
+                }
+
+        self.buffs = {
+                'alive' : True
+                'phased' : False
+                'wall' : False
+                'hurt' : False
+                'paralyzed' : False
                 }
 
         #Stat variables
@@ -35,21 +34,13 @@ class cell:
         self.basecritdamage = 200 #% increase to base damage when critting
         self.healmult = 100 #% effectiveness of healing
 
-        #TODO: Mutation flags
-        #Mutation flags will take the form "self.mutfoo"
-        #where "foo" is a one-word description of the mutation
-        self.mutmove = False
-
         #TODO: Learn mutation functions
         #Will take the form "self.learnfoo"
         #Where "foo" is the same word used in the flag
     def self.learnMove(self):
         self.mutmove = True
-        if self.currentstatus != self.statuses['paralyzed']:
-            self.canmove = True
-
-    def self.setStatus(self,status):
-        self.currentstatus = self.statuses[status]
+        if not self.buffs['paralyzed']:
+            self.setBuff('move' True)
 
     #TODO: Stats
     def self.hurt(self,amt):
@@ -67,10 +58,24 @@ class cell:
             self.hp += healamt
 
     #TODO: Status effects
+
+    #TODO: Active Ability Effects
+    #Just processes effects, doesn't check for range or anything else
+    def self.doStrike(self, cell):
+        amt = self.dmg * (1 + (self.attack / 100))
+        cell.hurt(amt)
+
+    def self.doWall(self):
+        self.defense *= 2
+        self.setBuff('wall', True)
+
+    def self.kill(self):
+        self.setBuff('alive', False)
+
     def self.clearStatus(self):
-        if self.mutmove and not self.canmove:
-            self.canmove = True
-        self.currentstatus = self.statuses['okay']
+        if self.mutmove and not self.buffs['move']:
+            self.setBuff('move', True)
+        self.setBuff('paralyzed', False)
 
     def isPlayable(self):
         return self.playable
@@ -141,15 +146,30 @@ class cell:
         dest = [self.coords[0] + 1, self.coords[1] + 1]
         self.checkCollision(dest, board)
 
+    #Helper functions
+    def calcDist(self, y1, x1, y2, x2):
+        y3 = pow(y2 - y1, 2)
+        x3 = pow(x2 - x1, 2)
+        ret = pow(x3 + y3, 0.5)
+        return ret
+
+    def isWithinRange(self, y1, x1, y2, x2, _range):
+        dist = calcDist(y1, x1, y2, x2)
+        if dist <= _range:
+            return True
+        else:
+            return False
+
+    def setBuff(self, buff, status):
+        self.buffs[buff] = status
+
 class player(cell):
     def __init__(self, y, x, icon, cellnum):
         self.chricon = icon
         self.coords = [y, x]
-        self.isalive = True
         self.evopoints = 0
         self.idnum = cellnum
         self.playable = True
-        self.canmove = False
 
         #Key definitions
         self.movekeys = {
