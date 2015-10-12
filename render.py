@@ -21,6 +21,3 @@ def displayCells(window,cellList):
     window.border(0)
     for i in cellList:
         showCell(i, window)
-
-def getKey(window):
-    return window.getkey()
