@@ -15,11 +15,11 @@ class cell:
                 }
 
         self.buffs = {
-                'alive' : True
-                'phased' : False
-                'wall' : False
-                'hurt' : False
-                'paralyzed' : False
+                'alive' : True,
+                'phased' : False,
+                'wall' : False,
+                'hurt' : False,
+                'paralyzed' : False,
                 'move' : False
                 }
 
@@ -38,20 +38,20 @@ class cell:
         #TODO: Learn mutation functions
         #Will take the form "self.learnfoo"
         #Where "foo" is the same word used in the flag
-    def self.learnMove(self):
+    def learnMove(self):
         self.mutmove = True
         if not self.buffs['paralyzed']:
             self.setBuff('move', True)
 
     #TODO: Dodge chance
-    def self.hurt(self,amt):
+    def hurt(self,amt):
         dmg = amt / (self.defense / 100.0)
         if dmg >= self.hp:
             self.kill()
         elif dmg > 0:
             self.hp -= dmg
 
-    def self.heal(self,amt,healmult):
+    def heal(self,amt,healmult):
         healamt = amt * (healmult / 100)
         if (self.hp + healamt) > self.maxhp:
             self.hp = self.maxhp
@@ -65,24 +65,24 @@ class cell:
 
     #TODO: Active Ability Effects
     #Just processes effects, doesn't check for range or anything else
-    def self.doStrike(self, cell):
+    def doStrike(self, cell):
         amt = self.dmg * (1 + (self.attack / 100))
         if self.checkCrit:
             amt *= (self.critdamage / 100.0)
         cell.hurt(amt)
 
-    def self.doWall(self):
+    def doWall(self):
         self.defense *= 2
         self.setBuff('wall', True)
 
-    def self.checkCrit(self):
+    def checkCrit(self):
         #TODO: Critical strikes
         return False
 
-    def self.kill(self):
+    def kill(self):
         self.setBuff('alive', False)
 
-    def self.clearStatus(self):
+    def clearStatus(self):
         if self.mutmove and not self.buffs['move']:
             self.setBuff('move', True)
         self.setBuff('paralyzed', False)
@@ -120,16 +120,18 @@ class cell:
     def updateLocation(self, dest, board):
         tileprev = board.getTile(self.coords)
         tilenew = board.getTile(dest)
-        tileprev.setOccupied(False)
-        if self.phased == False:
-            tilenew.setOccupied(True)
-        self.updateLocation(dest, board)
+        tileprev.occupied = False
+        #if not self.buffs['phased']:
+        self.coords = dest
+        tilenew.occupied = True
 
     def checkCollision(self, dest, board):
+        oldtile = board.getTile(self.coords)
         tile = board.getTile(dest)
         passable = tile.isPassable()
         if passable:
             self.updateLocation(dest, board)
+            print(oldtile.isOccupied())
 
     def moveNorth(self, board):
         dest = [self.coords[0] - 1, self.coords[1]]
@@ -139,10 +141,10 @@ class cell:
         self.checkCollision(dest, board)
     def moveEast(self, board):
         dest = [self.coords[0], self.coords[1] - 1]
-        self.updateLocation(dest, board)
+        self.checkCollision(dest, board)
     def moveWest(self, board):
         dest = [self.coords[0], self.coords[1] + 1]
-        self.updateLocation(dest, board)
+        self.checkCollision(dest, board)
     def moveNE(self, board):
         dest = [self.coords[0] - 1, self.coords[1] - 1]
         self.checkCollision(dest, board)
@@ -174,7 +176,7 @@ class cell:
         self.buffs[buff] = status
 
 class player(cell):
-    def __init__(self, y, x, icon, cellnum):
+    def __init__(self, y, x, icon, cellnum=0):
         cell.__init__(self, y, x, icon, cellnum)
 
         self.playable = True
@@ -190,12 +192,12 @@ class player(cell):
                 'SE': 'c',
                 'SW': 'z'
                 }
-        self.waitkey == 'r'
+        self.waitkey = 'r'
 
     def getInput(self, board, inpt):
         if inpt == self.waitkey:
-            break
-        elif self.canmove:
+            pass
+        elif self.buffs['move']:
             if inpt == self.movekeys['north']:
                 self.moveNorth(board)
             elif inpt == self.movekeys['south']:

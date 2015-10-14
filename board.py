@@ -8,9 +8,9 @@ class tile:
 
     #Check if the tile is passable
     def isPassable(self):
-        if self.occupied == True:
+        if self.occupied:
             passable = False
-        elif self.solid == True:
+        elif self.solid:
             passable = False
         else:
             passable = True
@@ -18,7 +18,7 @@ class tile:
 
     def getPid(self):
         return self.pid
-    def getTile(self):
+    def getIcon(self):
         return self.tile
 
     def isOccupied(self):
@@ -28,8 +28,8 @@ class tile:
 
 class board:
     #Outer tiles will be filled with impassable terrain
-    def __init__(self,width,height):
-        self.dimensions = [width,height]
+    def __init__(self,height,width):
+        self.dimensions = [height,width]
         self.layout = []
 
         #Tile definitions
@@ -38,12 +38,18 @@ class board:
         innerWall=tile(True, 2, "#")
 
         #Populate outer wall
-        for x in range(width):
-            self.layout.append([outerWall] + ([empty] * (height-2)) + [outerWall])
-        for y in range(height):
+        for x in range(width-1):
+            self.layout.append([outerWall] + ([empty] * (height-3)) + [outerWall])
+        for y in range(height-1):
             self.layout[0][y] = outerWall
-            self.layout[height-1][y] = outerWall
+            self.layout[height-2][y] = outerWall
 
     #Location is a coordinate list of form [y, x]
     def getTile(self,location):
-        return self.layout[location[1]][location[0]]
+        return self.layout[location[0]][location[1]]
+
+    def getSize(self):
+        return self.dimensions
+
+    def getLayout(self):
+        return self.layout
