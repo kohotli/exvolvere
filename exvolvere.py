@@ -22,6 +22,6 @@ while running:
     render.renderBoard(board,window)
     render.displayCells(renderList,window)
     window.refresh()
-    running = render.inputLoop(playerList, board, window, "p")
+    running = render.inputLoop(playerList, board, window, ";")
 
 render.closeCurses(stdscr)

@@ -11,7 +11,7 @@ class cell:
                 'sight' : False,
                 'strike' : False, #Basic damaging strike
                 'wall' : False, #Passes turn but doubles def
-                'leap' : False #Moves you two spaces in any direction
+                'leap' : True #Moves you two spaces in any direction
                 }
 
         self.buffs = {
@@ -21,6 +21,17 @@ class cell:
                 'hurt' : False,
                 'paralyzed' : False,
                 'move' : False
+                }
+
+        self.directionIDs = {
+                'north' : 0,
+                'south' : 1,
+                'east' : 2,
+                'west' : 3,
+                'NE' : 4,
+                'NW' : 5,
+                'SE' : 6,
+                'SW' : 7
                 }
 
         #Stat variables
@@ -65,15 +76,35 @@ class cell:
 
     #TODO: Active Ability Effects
     #Just processes effects, doesn't check for range or anything else
-    def doStrike(self, cell):
+    def doStrike(self, targetcell):
         amt = self.dmg * (1 + (self.attack / 100))
         if self.checkCrit:
             amt *= (self.critdamage / 100.0)
-        cell.hurt(amt)
+        targetcell.hurt(amt)
 
     def doWall(self):
         self.defense *= 2
         self.setBuff('wall', True)
+
+    def doLeap(self,board,direction):
+        if direction == 0:
+            self.moveNorth(board,2)
+        elif direction == 1:
+            self.moveSouth(board,2)
+        elif direction == 2:
+            self.moveEast(board,2)
+        elif direction == 3:
+            self.moveWest(board,2)
+        elif direction == 4:
+            self.moveNE(board,2)
+        elif direction == 5:
+            self.moveNW(board,2)
+        elif direction == 6:
+            self.moveSE(board,2)
+        elif direction == 7:
+            self.moveSW(board,2)
+
+
 
     def checkCrit(self):
         #TODO: Critical strikes
@@ -176,6 +207,12 @@ class cell:
     def setBuff(self, buff, status):
         self.buffs[buff] = status
 
+    def startOfTurn(self):
+        if self.buffs['wall']:
+            self.setBuff('wall', False)
+        if self.buffs['hurt']:
+            self.setBuff('hurt', False)
+
 class player(cell):
     def __init__(self, y, x, icon, cellnum=0):
         cell.__init__(self, y, x, icon, cellnum)
@@ -193,25 +230,59 @@ class player(cell):
                 'SE': 'c',
                 'SW': 'z'
                 }
+        self.activekeys = {
+                'strike': 'p',
+                'leap': 't',
+                'wall': 'v'
+                }
         self.waitkey = 'r'
 
-    def getInput(self, board, inpt, amt=1):
+    def getInput(self, board, window, inpt):
         if inpt == self.waitkey:
             pass
         elif self.buffs['move']:
             if inpt == self.movekeys['north']:
-                self.moveNorth(board, amt)
+                self.moveNorth(board, 1)
             elif inpt == self.movekeys['south']:
-                self.moveSouth(board, amt)
+                self.moveSouth(board, 1)
             elif inpt == self.movekeys['east']:
-                self.moveEast(board, amt)
+                self.moveEast(board, 1)
             elif inpt == self.movekeys['west']:
-                self.moveWest(board, amt)
+                self.moveWest(board, 1)
             elif inpt == self.movekeys['NE']:
-                self.moveNE(board, amt)
+                self.moveNE(board, 1)
             elif inpt == self.movekeys['NW']:
-                self.moveNW(board, amt)
+                self.moveNW(board, 1)
             elif inpt == self.movekeys['SE']:
-                self.moveSE(board, amt)
+                self.moveSE(board, 1)
             elif inpt == self.movekeys['SW']:
-                self.moveSW(board, amt)
+                self.moveSW(board, 1)
+        if self.learnedmutations['strike']:
+            if inpt == self.activekeys['strike']:
+                pass
+        elif self.learnedmutations['leap']:
+            if inpt == self.activekeys['leap']:
+                direction = self.pickDirection(window)
+                self.doLeap(board,direction)
+        elif self.learnedmutations['wall']:
+            if inpt == self.activekeys['wall']:
+                self.doWall()
+
+    def pickDirection(self,window):
+        inpt = window.getkey()
+        if inpt == self.movekeys['north']:
+            return self.directionIDs['north']
+        elif inpt == self.movekeys['south']:
+            return self.directionIDs['south']
+        elif inpt == self.movekeys['east']:
+            return self.directionIDs['east']
+        elif inpt == self.movekeys['west']:
+            return self.directionIDs['west']
+        elif inpt == self.movekeys['NE']:
+            return self.directionIDs['NE']
+        elif inpt == self.movekeys['NW']:
+            return self.directionIDs['NW']
+        elif inpt == self.movekeys['SE']:
+            return self.directionIDs['SE']
+        elif inpt == self.movekeys['SW']:
+            return self.directionIDs['SW']

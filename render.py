@@ -43,9 +43,10 @@ def renderBoard(board,window):
 #Calls getInput for all playable cells
 #Returns False if quitkey is triggered, else returns True
 def inputLoop(players, board, window, quitkey):
-    inpt = window.getkey()
-    if inpt == quitkey:
-        return False
     for i in players:
-        i.getInput(board, inpt, 1)
+        inpt = window.getkey()
+        if inpt == quitkey:
+            return False
+        i.startOfTurn()
+        i.getInput(board, window, inpt)
     return True
