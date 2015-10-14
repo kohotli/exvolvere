@@ -130,26 +130,6 @@ class cell:
     def getFormattedList(self):
         return [self.coords[0], self.coords[1], self.chricon]
 
-    #Movement functions
-    #wtb switch statements
-    #def move(self, direction, board):
-    #    if direction == 0:
-    #        self.moveNorth(board)
-    #    elif direction == 1:
-    #        self.moveSouth(board)
-    #    elif direction == 2:
-    #        self.moveEast(board)
-    #    elif direction == 3:
-    #        self.moveWest(board)
-    #    elif direction == 4:
-    #        self.moveNE(board)
-    #    elif direction == 5:
-    #        self.moveNW(board)
-    #    elif direction == 6:
-    #        self.moveSE(board)
-    #    elif direction == 7:
-    #        self.moveSW(board)
-
     def updateLocation(self, dest, board):
         tileprev = board.getTile(self.coords)
         tilenew = board.getTile(dest)
@@ -241,35 +221,20 @@ class player(cell):
         if inpt == self.waitkey:
             pass
         elif self.buffs['move']:
-            if inpt == self.movekeys['north']:
-                self.moveNorth(board, 1)
-            elif inpt == self.movekeys['south']:
-                self.moveSouth(board, 1)
-            elif inpt == self.movekeys['east']:
-                self.moveEast(board, 1)
-            elif inpt == self.movekeys['west']:
-                self.moveWest(board, 1)
-            elif inpt == self.movekeys['NE']:
-                self.moveNE(board, 1)
-            elif inpt == self.movekeys['NW']:
-                self.moveNW(board, 1)
-            elif inpt == self.movekeys['SE']:
-                self.moveSE(board, 1)
-            elif inpt == self.movekeys['SW']:
-                self.moveSW(board, 1)
+            self.move(self.pickDirection(inpt),board)
         if self.learnedmutations['strike']:
             if inpt == self.activekeys['strike']:
                 pass
         elif self.learnedmutations['leap']:
             if inpt == self.activekeys['leap']:
-                direction = self.pickDirection(window)
+                leapinpt = window.getkey()
+                direction = self.pickDirection(leapinpt)
                 self.doLeap(board,direction)
         elif self.learnedmutations['wall']:
             if inpt == self.activekeys['wall']:
                 self.doWall()
 
-    def pickDirection(self,window):
-        inpt = window.getkey()
+    def pickDirection(self, inpt):
         if inpt == self.movekeys['north']:
             return self.directionIDs['north']
         elif inpt == self.movekeys['south']:
@@ -286,3 +251,21 @@ class player(cell):
             return self.directionIDs['SE']
         elif inpt == self.movekeys['SW']:
             return self.directionIDs['SW']
+
+    def move(self, direction, board):
+        if direction == 0:
+            self.moveNorth(board, 1)
+        elif direction == 1:
+            self.moveSouth(board, 1)
+        elif direction == 2:
+            self.moveEast(board, 1)
+        elif direction == 3:
+            self.moveWest(board, 1)
+        elif direction == 4:
+            self.moveNE(board, 1)
+        elif direction == 5:
+            self.moveNW(board, 1)
+        elif direction == 6:
+            self.moveSE(board, 1)
+        elif direction == 7:
+            self.moveSW(board, 1)
