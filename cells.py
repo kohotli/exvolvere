@@ -195,23 +195,23 @@ class player(cell):
                 }
         self.waitkey = 'r'
 
-    def getInput(self, board, inpt):
+    def getInput(self, board, inpt, amt=1):
         if inpt == self.waitkey:
             pass
         elif self.buffs['move']:
             if inpt == self.movekeys['north']:
-                self.moveNorth(board, 1)
+                self.moveNorth(board, amt)
             elif inpt == self.movekeys['south']:
-                self.moveSouth(board, 1)
+                self.moveSouth(board, amt)
             elif inpt == self.movekeys['east']:
-                self.moveEast(board, 1)
+                self.moveEast(board, amt)
             elif inpt == self.movekeys['west']:
-                self.moveWest(board, 1)
+                self.moveWest(board, amt)
             elif inpt == self.movekeys['NE']:
-                self.moveNE(board, 1)
+                self.moveNE(board, amt)
             elif inpt == self.movekeys['NW']:
-                self.moveNW(board, 1)
+                self.moveNW(board, amt)
             elif inpt == self.movekeys['SE']:
-                self.moveSE(board, 1)
+                self.moveSE(board, amt)
             elif inpt == self.movekeys['SW']:
-                self.moveSW(board, 1)
+                self.moveSW(board, amt)

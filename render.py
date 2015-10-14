@@ -47,5 +47,5 @@ def inputLoop(players, board, window, quitkey):
     if inpt == quitkey:
         return False
     for i in players:
-        i.getInput(board, inpt)
+        i.getInput(board, inpt, 1)
     return True
