@@ -141,22 +141,22 @@ class cell:
         dest = [self.coords[0] + 1, self.coords[1]]
         self.checkCollision(dest, board)
     def moveEast(self, board):
-        dest = [self.coords[0], self.coords[1] - 1]
-        self.checkCollision(dest, board)
-    def moveWest(self, board):
         dest = [self.coords[0], self.coords[1] + 1]
         self.checkCollision(dest, board)
-    def moveNE(self, board):
-        dest = [self.coords[0] - 1, self.coords[1] - 1]
+    def moveWest(self, board):
+        dest = [self.coords[0], self.coords[1] - 1]
         self.checkCollision(dest, board)
-    def moveNW(self, board):
+    def moveNE(self, board):
         dest = [self.coords[0] - 1, self.coords[1] + 1]
         self.checkCollision(dest, board)
+    def moveNW(self, board):
+        dest = [self.coords[0] - 1, self.coords[1] - 1]
+        self.checkCollision(dest, board)
     def moveSE(self, board):
-        dest = [self.coords[0] + 1, self.coords[1] - 1]
+        dest = [self.coords[0] + 1, self.coords[1] + 1]
         self.checkCollision(dest, board)
     def moveSW(self, board):
-        dest = [self.coords[0] + 1, self.coords[1] + 1]
+        dest = [self.coords[0] + 1, self.coords[1] - 1]
         self.checkCollision(dest, board)
 
     #Helper functions
