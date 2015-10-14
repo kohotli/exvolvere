@@ -133,7 +133,6 @@ class cell:
         passable = tile.isPassable()
         if passable:
             self.updateLocation(dest, board)
-            print(oldtile.isOccupied())
 
     def moveNorth(self, board):
         dest = [self.coords[0] - 1, self.coords[1]]

@@ -33,16 +33,25 @@ class board:
         self.layout = []
 
         #Tile definitions
-        empty=tile(False, 0, " ")
-        outerWall=tile(True, 1, "#")
-        innerWall=tile(True, 2, "#")
+        #empty=tile(False, 0, " ")
+        #outerWall=tile(True, 1, "#")
+        #innerWall=tile(True, 2, "#")
 
         #Populate outer wall
+        #for x in range(width-1):
+            #self.layout.append([outerWall] + ([empty] * (height-3)) + [outerWall])
+        #for y in range(height-1):
+            #self.layout[0][y] = outerWall
+            #self.layout[height-2][y] = outerWall
         for x in range(width-1):
-            self.layout.append([outerWall] + ([empty] * (height-3)) + [outerWall])
-        for y in range(height-1):
-            self.layout[0][y] = outerWall
-            self.layout[height-2][y] = outerWall
+            self.layout.append([])
+            for y in range(height-1):
+                if x == 0 or x == (height - 2):
+                    self.layout[x].append(tile(True, 1, "#"))
+                elif y == 0 or y == (width - 2):
+                    self.layout[x].append(tile(True, 1, "#"))
+                else:
+                    self.layout[x].append(tile(False, 0, " "))
 
     #Location is a coordinate list of form [y, x]
     def getTile(self,location):

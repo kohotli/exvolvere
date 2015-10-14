@@ -13,13 +13,13 @@ window = render.makeWindow(dimensions)
 board = board.board(dimensions[0],dimensions[1])
 player = cells.player(3, 3, "@", 0)
 playerList = [player]
-renderList = [player.getFormattedList()]
 
 player.learnMove()
 
 while running:
     #render.clearWindow(window)
     window.clear()
+    renderList = [player.getFormattedList()]
     render.renderBoard(board,window)
     render.displayCells(renderList,window)
     window.refresh()
