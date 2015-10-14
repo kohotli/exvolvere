@@ -44,10 +44,10 @@ class cell:
             self.setBuff('move', True)
 
     #TODO: Dodge chance
-    def hurt(self,amt):
+    def hurt(self,amt,board):
         dmg = amt / (self.defense / 100.0)
         if dmg >= self.hp:
-            self.kill()
+            self.kill(board)
         elif dmg > 0:
             self.hp -= dmg
 
@@ -79,8 +79,10 @@ class cell:
         #TODO: Critical strikes
         return False
 
-    def kill(self):
+    def kill(self, board):
         self.setBuff('alive', False)
+        tile = board.getTile(self.coords)
+        tile.setOccupied(False)
 
     def clearStatus(self):
         if self.mutmove and not self.buffs['move']:
