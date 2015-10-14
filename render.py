@@ -21,9 +21,7 @@ def makeWindow(dimensions):
 
 #Clear curses window
 def clearWindow(window):
-    window.erase()
-    print("window cleared")
-    window.border(0)
+    window.clear()
 
 #Cell is a list of form [y, x, icon] where icon is the character to be rendered
 def showCell(cell, window):

@@ -17,8 +17,7 @@ playerList = [player]
 player.learnMove()
 
 while running:
-    #render.clearWindow(window)
-    window.clear()
+    render.clearWindow(window)
     renderList = [player.getFormattedList()]
     render.renderBoard(board,window)
     render.displayCells(renderList,window)

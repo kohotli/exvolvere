@@ -134,29 +134,29 @@ class cell:
         if passable:
             self.updateLocation(dest, board)
 
-    def moveNorth(self, board):
-        dest = [self.coords[0] - 1, self.coords[1]]
+    def moveNorth(self, board, amt=1):
+        dest = [self.coords[0] - amt, self.coords[1]]
         self.checkCollision(dest, board)
-    def moveSouth(self, board):
-        dest = [self.coords[0] + 1, self.coords[1]]
+    def moveSouth(self, board, amt=1):
+        dest = [self.coords[0] + amt, self.coords[1]]
         self.checkCollision(dest, board)
-    def moveEast(self, board):
-        dest = [self.coords[0], self.coords[1] + 1]
+    def moveEast(self, board, amt=1):
+        dest = [self.coords[0], self.coords[1] + amt]
         self.checkCollision(dest, board)
-    def moveWest(self, board):
-        dest = [self.coords[0], self.coords[1] - 1]
+    def moveWest(self, board, amt=1):
+        dest = [self.coords[0], self.coords[1] - amt]
         self.checkCollision(dest, board)
-    def moveNE(self, board):
-        dest = [self.coords[0] - 1, self.coords[1] + 1]
+    def moveNE(self, board, amt=1):
+        dest = [self.coords[0] - amt, self.coords[1] + amt]
         self.checkCollision(dest, board)
-    def moveNW(self, board):
-        dest = [self.coords[0] - 1, self.coords[1] - 1]
+    def moveNW(self, board, amt=1):
+        dest = [self.coords[0] - amt, self.coords[1] - amt]
         self.checkCollision(dest, board)
-    def moveSE(self, board):
-        dest = [self.coords[0] + 1, self.coords[1] + 1]
+    def moveSE(self, board, amt=1):
+        dest = [self.coords[0] + amt, self.coords[1] + amt]
         self.checkCollision(dest, board)
-    def moveSW(self, board):
-        dest = [self.coords[0] + 1, self.coords[1] - 1]
+    def moveSW(self, board, amt=1):
+        dest = [self.coords[0] + amt, self.coords[1] - amt]
         self.checkCollision(dest, board)
 
     #Helper functions
@@ -200,18 +200,18 @@ class player(cell):
             pass
         elif self.buffs['move']:
             if inpt == self.movekeys['north']:
-                self.moveNorth(board)
+                self.moveNorth(board, 1)
             elif inpt == self.movekeys['south']:
-                self.moveSouth(board)
+                self.moveSouth(board, 1)
             elif inpt == self.movekeys['east']:
-                self.moveEast(board)
+                self.moveEast(board, 1)
             elif inpt == self.movekeys['west']:
-                self.moveWest(board)
+                self.moveWest(board, 1)
             elif inpt == self.movekeys['NE']:
-                self.moveNE(board)
+                self.moveNE(board, 1)
             elif inpt == self.movekeys['NW']:
-                self.moveNW(board)
+                self.moveNW(board, 1)
             elif inpt == self.movekeys['SE']:
-                self.moveSE(board)
+                self.moveSE(board, 1)
             elif inpt == self.movekeys['SW']:
-                self.moveSW(board)
+                self.moveSW(board, 1)
