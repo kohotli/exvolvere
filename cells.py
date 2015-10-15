@@ -127,6 +127,9 @@ class cell:
     def isPlayable(self):
         return self.playable
 
+    def isAlive(self):
+        return self.buffs['alive']
+
     def getIcon(self):
         return self.chricon
 

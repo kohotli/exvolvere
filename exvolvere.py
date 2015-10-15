@@ -21,9 +21,14 @@ player.learnMove()
 while running:
     #render.clearWindow(window)
     board.clearUnitList()
-    renderList = [player.getFormattedList(), dedcell.getFormattedList()]
+    renderList = []
+    newcelllist = []
     for i in cellList:
-        board.addUnit(i)
+        if i.isAlive():
+            newcelllist.append(i)
+            board.addUnit(i)
+            renderList.append(i.getFormattedList())
+    cellList = newcelllist
     render.renderBoard(board,window)
     render.displayCells(renderList,window)
     window.refresh()
