@@ -31,6 +31,7 @@ class board:
     def __init__(self,height,width):
         self.dimensions = [height,width]
         self.layout = []
+        self.units = []
 
         #Tile definitions
         #empty=tile(False, 0, " ")
@@ -62,3 +63,18 @@ class board:
 
     def getLayout(self):
         return self.layout
+
+    def addUnit(self,cell):
+        self.units.append(cell)
+
+    def clearUnitList(self):
+        self.units = []
+
+    #Returns a list of cell objects that occupy a particular tile
+    #List will be empty if there are no cells
+    def getCells(self,coords):
+        ret = []
+        for i in self.units:
+            if i.getCoords() == coords:
+                ret.append(i)
+        return ret

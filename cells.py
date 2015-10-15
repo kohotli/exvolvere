@@ -1,5 +1,5 @@
 class cell:
-    def __init__(self, y, x, icon, cellnum):
+    def __init__(self, y, x, icon, cellnum, board):
         self.chricon = icon
         self.coords = [y, x]
         self.evopoints = 0
@@ -9,7 +9,7 @@ class cell:
         self.learnedmutations = {
                 'move' : False,
                 'sight' : False,
-                'strike' : False, #Basic damaging strike
+                'strike' : True, #Basic damaging strike
                 'wall' : False, #Passes turn but doubles def
                 'leap' : True #Moves you two spaces in any direction
                 }
@@ -49,6 +49,9 @@ class cell:
         #TODO: Learn mutation functions
         #Will take the form "self.learnfoo"
         #Where "foo" is the same word used in the flag
+
+        #Set spawned tile as occupied
+        self.updateLocation(self.coords,board)
     def learnMove(self):
         self.mutmove = True
         if not self.buffs['paralyzed']:
@@ -56,11 +59,13 @@ class cell:
 
     #TODO: Dodge chance
     def hurt(self,amt,board):
-        dmg = amt / (self.defense / 100.0)
+        dmg = amt / (1 + (self.defense / 100.0))
         if dmg >= self.hp:
             self.kill(board)
+            self.hp = 0
         elif dmg > 0:
             self.hp -= dmg
+            self.setBuff('hurt', True)
 
     def heal(self,amt,healmult):
         healamt = amt * (healmult / 100)
@@ -76,11 +81,12 @@ class cell:
 
     #TODO: Active Ability Effects
     #Just processes effects, doesn't check for range or anything else
-    def doStrike(self, targetcell):
-        amt = self.dmg * (1 + (self.attack / 100))
-        if self.checkCrit:
-            amt *= (self.critdamage / 100.0)
-        targetcell.hurt(amt)
+    def doStrike(self, targetcells, board):
+        amt = self.damage * (1 + (self.attack / 100))
+        for i in targetcells:
+            if self.checkCrit:
+                amt *= (self.critdamage / 100.0)
+            i.hurt(amt,board)
 
     def doWall(self):
         self.defense *= 2
@@ -103,8 +109,6 @@ class cell:
             self.moveSE(board,2)
         elif direction == 7:
             self.moveSW(board,2)
-
-
 
     def checkCrit(self):
         #TODO: Critical strikes
@@ -129,6 +133,10 @@ class cell:
     #Returns a list of form [y, x, icon], also referred to as a cell type
     def getFormattedList(self):
         return [self.coords[0], self.coords[1], self.chricon]
+
+    #Returns list of coordinates in form [y, x]
+    def getCoords(self):
+        return self.coords
 
     def updateLocation(self, dest, board):
         tileprev = board.getTile(self.coords)
@@ -193,9 +201,27 @@ class cell:
         if self.buffs['hurt']:
             self.setBuff('hurt', False)
 
+    def getCoordinateOffset(self,direction,amt):
+        if direction == 0: #North
+            return [self.coords[0] - amt, self.coords[1]]
+        elif direction == 1: #South
+            return [self.coords[0] + amt, self.coords[1]]
+        elif direction == 2: #East
+            return [self.coords[0], self.coords[1] + amt]
+        elif direction == 3: #West
+            return [self.coords[0], self.coords[1] - amt]
+        elif direction == 4: #North East
+            return [self.coords[0] - amt, self.coords[1] + amt]
+        elif direction == 5: #North West
+            return [self.coords[0] - amt, self.coords[1] - amt]
+        elif direction == 6: #South East
+            return [self.coords[0] + amt, self.coords[1] + amt]
+        elif direction == 7: #South West
+            return [self.coords[0] + amt, self.coords[1] - amt]
+
 class player(cell):
-    def __init__(self, y, x, icon, cellnum=0):
-        cell.__init__(self, y, x, icon, cellnum)
+    def __init__(self, y, x, icon, cellnum, board):
+        cell.__init__(self, y, x, icon, cellnum, board)
 
         self.playable = True
 
@@ -224,7 +250,12 @@ class player(cell):
             self.move(self.pickDirection(inpt),board)
         if self.learnedmutations['strike']:
             if inpt == self.activekeys['strike']:
-                pass
+                #TODO: Call strike function
+                dirinpt = window.getkey()
+                direction = self.pickDirection(dirinpt)
+                target = self.getCoordinateOffset(direction,1)
+                cellList = board.getCells(target)
+                self.doStrike(cellList, board)
         elif self.learnedmutations['leap']:
             if inpt == self.activekeys['leap']:
                 leapinpt = window.getkey()
